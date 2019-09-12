@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header {
+  background-color: teal;
+}
+
+.main {
+  background-color: burlywood;
+  display: flex;
+}
+
+.sidebar {
+  width: 10rem;
+}
+
+.left {
+  background-color: orange;
+}
+
+.right {
+  background-color: papayawhip;
+}
+
+.main-article {
+  /* width: 100%; */
+  flex-grow: 1;
+  height: 200px;
+}
+
+.site-footer {
+  background-color: darkorchid;
+}
+
+.container {
+  max-width: 60rem;
+  margin: 0 auto;
+}
