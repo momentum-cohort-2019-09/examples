@@ -1,7 +1,10 @@
 const addButton = document.querySelector('#add-button')
+const addItemForm = document.querySelector('#add-item-form')
 const removeButton = document.querySelector('#remove-items')
 
-addButton.addEventListener('click', function (event) {
+function addNewItem (event) {
+  event.preventDefault()
+
   const field = document.querySelector('#add-item')
   const itemText = field.value
 
@@ -17,7 +20,9 @@ addButton.addEventListener('click', function (event) {
     field.value = ''
     field.focus()
   }
-})
+}
+
+addItemForm.addEventListener('submit', addNewItem)
 
 removeButton.addEventListener('click', function (event) {
   const itemsToRemove = document.querySelectorAll('.stricken')

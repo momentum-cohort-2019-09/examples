@@ -13,9 +13,11 @@
   <div class="mw8 center">
     <h1>Grocery list</h1>
     <div>
-      <label for="add-item" class="f6 b db mb2">Add a new item</label>
-      <input id="add-item" type="text" class="input-reset ba b--black-20 pa2 w-100">
-      <button id="add-button" class="mt2 bg-green white pa2 br2 dim pointer">Add to list</button>
+      <form id="add-item-form">
+        <label for="add-item" class="f6 b db mb2">Add a new item</label>
+        <input required id="add-item" type="text" class="input-reset ba b--black-20 pa2 w-100">
+        <button id="add-button" class="mt2 bg-green white pa2 br2 dim pointer">Add to list</button>
+      </form>
     </div>
 
     <ul id="grocery-list" class="list pl0"></ul>
