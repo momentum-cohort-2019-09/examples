@@ -19,6 +19,9 @@ ul {
   max-width: 60rem;
   margin: 0 auto;
   background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .site-header {
@@ -41,6 +44,7 @@ ul {
 }
 
 .main {
+  flex-grow: 1;
   background-color: burlywood;
 }
 

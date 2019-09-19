@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo list</title>
+  <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Todo list</h1>
+    <form id="todo-form">
+      <div class="input-field">
+        <label for="todo-text">Todo</label>
+        <input id="todo-text" type="text">
+      </div>
+      <div class="input-field">
+        <label for="todo-due">Due on</label>
+        <input id="todo-due" type="date">
+        <p class="input-hint">Leave blank for no due date</p>
+      </div>
+      <div class="input-field">
+        <label for="todo-priority">Priority</label>
+        <select id="todo-priority">
+          <option value="1">Low</option>
+          <option selected value="2">Normal</option>
+          <option value="3">High</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit">Add todo</button>
+      </div>
+    </form>
+
+    <ul id="todo-list"></ul>
+  </div>
+</body>
+</html>
