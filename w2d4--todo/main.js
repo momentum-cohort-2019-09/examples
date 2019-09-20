@@ -3,17 +3,19 @@ function query (selector) {
 }
 
 function markValid (field) {
-  clearErrorMsgs(field)
-  field.parentNode.classList.remove('input-invalid')
-  field.parentNode.classList.add('input-valid')
+  const fieldContainer = field.parentNode
+  clearErrorMsgs(fieldContainer)
+  fieldContainer.classList.remove('input-invalid')
+  fieldContainer.classList.add('input-valid')
 }
 
 function markInvalid (field, errorMsg) {
-  clearErrorMsgs(field)
   const fieldContainer = field.parentNode
+  clearErrorMsgs(fieldContainer)
   fieldContainer.classList.remove('input-valid')
   fieldContainer.classList.add('input-invalid')
 
+  // errorMsg is a string or undefined, but is being evaluated in a boolean context
   if (errorMsg) {
     const errorPara = document.createElement('p')
     errorPara.classList.add('input-hint', 'text-danger', 'error-message')
@@ -22,22 +24,24 @@ function markInvalid (field, errorMsg) {
   }
 }
 
-function clearErrorMsgs (field) {
-  const fieldContainer = field.parentNode
+function clearErrorMsgs (fieldContainer) {
   for (let msg of fieldContainer.querySelectorAll('.error-message')) {
     msg.remove()
   }
 }
 
+function createTodoHTML (text, dueDate) {
+  return `
+  <div class="row">
+    <div class="col-9">${text}</div>
+    <div class="col-3">${dueDate || ''}</div>
+  </div>
+`
+}
+
 function addTodo (text, dueDate) {
   let todoListItem = document.createElement('li')
-  let todoHtml = `
-    <div class="row">
-      <div class="col-9">${text}</div>
-      <div class="col-3">${dueDate || ''}</div>
-    </div>
-  `
-  console.log(todoHtml)
+  let todoHtml = createTodoHTML(text, dueDate)
   todoListItem.innerHTML = todoHtml
   query('#todo-list').appendChild(todoListItem)
 }
@@ -45,7 +49,6 @@ function addTodo (text, dueDate) {
 function isDateTodayOrLater (date) {
   let now = new Date()
   now.setUTCHours(0, 0, 0, 0)
-  console.log({ now, date })
   return date >= now
 }
 
@@ -80,7 +83,7 @@ function main () {
     if (textValid) {
       markValid(todoTextField)
     } else {
-      markInvalid(todoTextField)
+      markInvalid(todoTextField, 'Todo is required.')
     }
 
     let dueField = query('#todo-due')
