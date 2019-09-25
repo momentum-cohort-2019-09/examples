@@ -6,14 +6,14 @@ class Game {
   constructor () {
     // In index.html, there is a canvas tag that the game will be drawn in.
     // Grab that canvas out of the DOM.
-    var canvas = document.getElementById('space-invaders')
+    let canvas = document.getElementById('space-invaders')
 
     // Get the drawing context.  This contains functions that let you draw to the canvas.
-    var screen = canvas.getContext('2d')
+    let screen = canvas.getContext('2d')
 
     // Note down the dimensions of the canvas.  These are used to
     // place game bodies.
-    var gameSize = { x: canvas.width, y: canvas.height }
+    let gameSize = { x: canvas.width, y: canvas.height }
 
     // Create the bodies array to hold the player, invaders and bullets.
     this.bodies = []
@@ -28,15 +28,13 @@ class Game {
     // Get the shoot sound from the DOM and store it on the game object.
     this.shootSound = document.getElementById('shoot-sound')
 
-    var self = this
-
     // Main game tick function.  Loops forever, running 60ish times a second.
-    var tick = function () {
+    let tick = () => {
     // Update game state.
-      self.update()
+      this.update()
 
       // Draw game bodies.
-      self.draw(screen, gameSize)
+      this.draw(screen, gameSize)
 
       // Queue up the next call to tick with the browser.
       requestAnimationFrame(tick)
@@ -49,12 +47,10 @@ class Game {
 
   // **update()** runs the main game logic.
   update () {
-    var self = this
-
     // `notCollidingWithAnything` returns true if passed body
     // is not colliding with anything.
-    var notCollidingWithAnything = function (b1) {
-      return self.bodies.filter(function (b2) { return colliding(b1, b2) }).length === 0
+    let notCollidingWithAnything = (b1) => {
+      return this.bodies.filter(function (b2) { return colliding(b1, b2) }).length === 0
     }
 
     // Throw away bodies that are colliding with something. They
@@ -62,7 +58,7 @@ class Game {
     this.bodies = this.bodies.filter(notCollidingWithAnything)
 
     // Call update on every body.
-    for (var i = 0; i < this.bodies.length; i++) {
+    for (let i = 0; i < this.bodies.length; i++) {
       this.bodies[i].update()
     }
   }
@@ -73,7 +69,7 @@ class Game {
     screen.clearRect(0, 0, gameSize.x, gameSize.y)
 
     // Draw each body as a rectangle.
-    for (var i = 0; i < this.bodies.length; i++) {
+    for (let i = 0; i < this.bodies.length; i++) {
       drawRect(screen, this.bodies[i])
     }
   }
@@ -132,7 +128,7 @@ class Invader {
           !this.game.invadersBelow(this)) {
       // ... create a bullet just below the invader that will move
       // downward...
-      var bullet = new Bullet({ x: this.center.x, y: this.center.y + this.size.y / 2 },
+      let bullet = new Bullet({ x: this.center.x, y: this.center.y + this.size.y / 2 },
         { x: Math.random() - 0.5, y: 2 })
 
       // ... and add the bullet to the game.
@@ -142,20 +138,20 @@ class Invader {
     // Move according to current x speed.
     this.center.x += this.speedX
 
-    // Update variable that keeps track of current position in patrol.
+    // Update letiable that keeps track of current position in patrol.
     this.patrolX += this.speedX
   }
 }
 
 // **createInvaders()** returns an array of twenty-four invaders.
 function createInvaders (game) {
-  var invaders = []
-  for (var i = 0; i < 24; i++) {
+  let invaders = []
+  for (let i = 0; i < 24; i++) {
     // Place invaders in eight columns.
-    var x = 30 + (i % 8) * 30
+    let x = 30 + (i % 8) * 30
 
     // Place invaders in three rows.
-    var y = 30 + (i % 3) * 30
+    let y = 30 + (i % 3) * 30
 
     // Create invader.
     invaders.push(new Invader(game, { x: x, y: y }))
@@ -191,7 +187,7 @@ class Player {
     // If S key is down...
     if (this.keyboarder.isDown(this.keyboarder.KEYS.S)) {
       // ... create a bullet just above the player that will move upwards...
-      var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.y - 10 },
+      let bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.y - 10 },
         { x: 0, y: -7 })
 
       // ... add the bullet to the game...
@@ -232,7 +228,7 @@ class Bullet {
 class Keyboarder {
   constructor () {
     // Records up/down state of each key that has ever been pressed.
-    var keyState = {}
+    let keyState = {}
 
     // When key goes down, record that it is down.
     window.addEventListener('keydown', function (e) {
