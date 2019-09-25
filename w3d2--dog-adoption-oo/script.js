@@ -1,5 +1,19 @@
 /* globals dogsInfo, moment */
 
+class Person {
+  constructor (name, height, heightUnit) {
+    this.name = name
+
+    if (heightUnit === 'cm') {
+      this.heightInCm = height
+    } else if (heightUnit === 'm') {
+      this.heightInCm = height * 100
+    } else if (heightUnit === 'in') {
+      this.heightInCm = height * 2.2
+    }
+  }
+}
+
 const capitalize = str => str[0].toUpperCase() + str.slice(1)
 
 class Dog {
