@@ -30,7 +30,6 @@ class Game {
 
     this.player = new Player(playerLocation, playerSize)
     this.addBody(this.player)
-    this.addBody(new Obstacle({ x: this.size.width - 30, y: this.groundY - 15 }, { width: 30, height: 30 }))
   }
 
   addBody (body) {
@@ -83,7 +82,7 @@ class Game {
     }
 
     // ??? FIXME
-    // this.bodies = this.bodies.filter(bodyOnScreen)
+    this.bodies = this.bodies.filter(bodyOnScreen)
   }
 
   draw () {
@@ -203,7 +202,7 @@ class Keyboarder {
 }
 
 function bodyOnScreen (body) {
-  return body.center.x > 0 - body.width / 2
+  return body.center.x > 0 - body.size.width
 }
 
 function colliding (b1, b2) {
