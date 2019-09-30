@@ -1,4 +1,5 @@
-import { colliding } from './collisions'
+import { Circle, Polygon, Result } from 'collisions'
+import deadSound from './dead.mp3'
 
 const colors = {
   sky: '#B8DBD9',
@@ -19,7 +20,7 @@ export class Game {
     this.ticksSinceObstacle = 0
     this.keyboard = new Keyboarder()
     this.gameOver = false
-    this.deadSound = new Audio('dead.mp3')
+    this.deadSound = new Audio(deadSound)
 
     let playerSize = {
       width: 20,
@@ -88,7 +89,8 @@ export class Game {
 
     for (let body of this.bodies) {
       body.update(this)
-      if (colliding(this.player, body)) {
+      const result = new Result()
+      if (body !== this.player && !body.safe && this.player.toShape().collides(body.toShape(), result)) {
         this.gameOver = true
         this.deadSound.play()
       }
@@ -149,6 +151,15 @@ class Player {
       this.center.y - (this.size.height / 2),
       this.size.width, this.size.height)
   }
+
+  toShape () {
+    return new Polygon(this.center.x, this.center.y,
+      [[-(this.size.width / 2), -(this.size.height / 2)],
+        [(this.size.width / 2), -(this.size.height / 2)],
+        [(this.size.width / 2), (this.size.height / 2)],
+        [-(this.size.width / 2), (this.size.height / 2)]
+      ])
+  }
 }
 
 class Obstacle {
@@ -168,6 +179,15 @@ class Obstacle {
       this.center.y - (this.size.height / 2),
       this.size.width, this.size.height)
   }
+
+  toShape () {
+    return new Polygon(this.center.x, this.center.y,
+      [[-(this.size.width / 2), -(this.size.height / 2)],
+        [(this.size.width / 2), -(this.size.height / 2)],
+        [(this.size.width / 2), (this.size.height / 2)],
+        [-(this.size.width / 2), (this.size.height / 2)]
+      ])
+  }
 }
 
 export class Ball {
@@ -175,7 +195,6 @@ export class Ball {
     this.center = center
     this.diameter = diameter
     this.velocityX = velocityX
-    this.safe = true
     this.size = { width: diameter, height: diameter }
   }
 
@@ -194,6 +213,10 @@ export class Ball {
       2 * Math.PI)
     screen.fill()
     screen.closePath()
+  }
+
+  toShape () {
+    return new Circle(this.center.x, this.center.y, this.diameter / 2)
   }
 }
 
