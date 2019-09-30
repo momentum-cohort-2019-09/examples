@@ -17,6 +17,7 @@ class Game {
     this.ticksSinceObstacle = 0
     this.keyboard = new Keyboarder()
     this.gameOver = false
+    this.deadSound = new Audio('dead.mp3')
 
     let playerSize = {
       width: 20,
@@ -61,6 +62,7 @@ class Game {
 
   update () {
     // console.log(this.bodies.length)
+
     const obstacleOccurPercentage = this.ticksSinceObstacle * 0.0001
 
     if (Math.random() < obstacleOccurPercentage) {
@@ -78,6 +80,7 @@ class Game {
       body.update(this)
       if (colliding(this.player, body)) {
         this.gameOver = true
+        this.deadSound.play()
       }
     }
 
@@ -107,6 +110,7 @@ class Player {
     this.startingY = center.y
     this.velocityY = 0
     this.jumping = false
+    this.jumpSound = document.querySelector('#jump-sound')
   }
 
   update (game) {
@@ -122,6 +126,7 @@ class Player {
     }
 
     if (game.keyboard.isDown(Keyboarder.KEYS.SPACE) && !this.jumping) {
+      this.jumpSound.play()
       this.jumping = true
       this.velocityY = 15
     }
