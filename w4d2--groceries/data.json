@@ -1,0 +1,55 @@
+{
+  "lists": [
+    {
+      "id": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "name": "Grocery store"
+    },
+    {
+      "id": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
+      "name": "Costco"
+    }
+  ],
+  "items": [
+    {
+      "id": "b451ab9d-18b9-4b4c-8911-19941bda69e2",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "name": "Plain yogurt"
+    },
+    {
+      "id": "843fc5fa-08d8-4c4c-b745-9d7a2f6c6246",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "name": "Hummus"
+    },
+    {
+      "id": "0cc57bf7-281e-4904-9766-e21cadf9599a",
+      "listId": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
+      "name": "Coffee"
+    },
+    {
+      "id": "e45e53ba-3ed3-40e2-a637-5f2c407305e6",
+      "listId": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
+      "name": "Dog food"
+    },
+    {
+      "id": "327a865d-82c7-477a-a678-20b00bae7812",
+      "listId": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
+      "name": "Bread"
+    },
+    {
+      "id": "ycLV49e"
+    },
+    {
+      "id": "MRaFuFe"
+    },
+    {
+      "name": "Wasabi peas",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "cf676db0-23ef-457c-b5d2-dc2a88e732a8"
+    },
+    {
+      "name": "Adult diapers",
+      "listId": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
+      "id": "0143c723-41ca-48ab-a3eb-9ad9bd5b75f7"
+    }
+  ]
+}

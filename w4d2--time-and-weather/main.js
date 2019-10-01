@@ -15,32 +15,44 @@ function updateLoop () {
 
 updateLoop()
 
-fetch('https://api.weather.gov/gridpoints/RAH/62,66/forecast', {
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json'
-  }
-})
-  .then(response => {
-    console.log(response)
-    return response.json()
+fetch('https://api.weather.gov/points/35.994,-78.8986')
+  .then(response => response.json())
+  .then(data => {
+    const forecastURL = data.properties.forecast
+    return fetch(forecastURL)
   })
+  .then(response => response.json())
   .then(function (data) {
     const currentWeather = data.properties.periods[0]
-
     weatherDiv.innerText = `The current weather is ${currentWeather.detailedForecast}`
   })
-  .catch(function (error) {
-    weatherDiv.innerText = `We cannot retrieve the weather at this time. Message: ${error.message}`
-  })
 
-fetch('https://swapi.co/api/people/14/')
+const swDiv = document.querySelector('#star-wars')
+
+fetch('https://swapi.co/api/people/1/')
   .then(res => res.json())
   .then(data => {
-    console.log(data.name)
-    return fetch(data.homeworld)
+    const h2 = document.createElement('h2')
+    h2.innerText = data.name
+    swDiv.appendChild(h2)
+    return data.films
   })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data.name)
+  .then(filmURLs => {
+    const fetches = filmURLs.map(url => fetch(url))
+    console.log(fetches)
+    return Promise.all(fetches)
+  })
+  .then(responses => {
+    console.log(responses)
+    return Promise.all(responses.map(res => res.json()))
+  })
+  .then(dataArray => {
+    console.log(dataArray)
+    const ul = document.createElement('ul')
+    for (let film of dataArray) {
+      const li = document.createElement('li')
+      li.innerText = film.title
+      ul.appendChild(li)
+    }
+    swDiv.appendChild(ul)
   })
