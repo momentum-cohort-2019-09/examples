@@ -2,29 +2,34 @@
 
 const uuidv4 = require('uuid/v4')
 
+import h from 'hyperscript'
+
 function populateListsAndItems () {
   fetch('http://localhost:3000/lists?_embed=items')
     .then(response => response.json())
     .then(data => {
       console.log(data)
-      document.getElementById('lists').innerHTML = data.map(generateListHTML).join('\n')
+      document.getElementById('lists').innerHTML = ''
+      for (let node of data.map(generateListNodes)) {
+        document.getElementById('lists').appendChild(node)
+      }
+      
     })
 }
 
-function generateListHTML (list) {
-  return `
-  <section class="shadow-1 pv1 ph3 mb4">
-    <h2 class="mt3">${list.name}</h2>
-    <ul class="list pl0">
-      ${list.items.map(item => `<li class="mb2">${item.name}</li>`).join('\n')}      
-      <li class="mb2"><a class="add-item-link" href="#">+ Add</a></li>      
-    </ul>
-    <form class="add-item-form hidden mb2" data-list-id="${list.id}">
-      <input type="text" name="name" />
-      <button type="submit">Add item to list</button>
-    </form>
-  </section>
-  `
+function generateListNodes (list) {
+  return h(
+    'section.shadow-1.pv1.ph3.mb4',
+    h('h2.mt3', list.name),
+    h('ul.list.pl0',
+      list.items.map(item => h('li.mb2', item.name)),
+      h('li.mb2', h('a.add-item-link', { href: "#" }, "+ Add"))
+    ),
+    h('form.add-item-form.hidden.mb2', {
+      'data-list-id': list.id
+    }, h('input', { type: 'text', name: 'name' }),
+    h('button', { type: 'submit' }, "Add item to list"))
+  )
 }
 
 function main () {
