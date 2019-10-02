@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Star Wars Search</title>
+  <script src="/main.1f19ae8e.js" defer=""></script>
+</head>
+<body>
+  <h1>Star Wars Person Search</h1>
+  <form id="search-form">
+    <div>
+      <p>Search for type:</p>
+      <label for="search-type-people">
+        <input type="radio" name="search-type" id="search-type-people" value="people">
+        People
+      </label>
+      <label for="search-type-planets">
+        <input type="radio" name="search-type" id="search-type-planets" value="planets">
+        Planets
+      </label>
+      <label for="search-type-starships">
+        <input type="radio" name="search-type" id="search-type-starships" value="starships">
+        Starships
+      </label>
+    </div>
+    <input type="text" name="search-term" id="search-term">
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results">
+
+  </div>
+</body>
+</html>

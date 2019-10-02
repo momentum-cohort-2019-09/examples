@@ -9,7 +9,9 @@
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
   <script src="main.js" defer></script>
   <style>
-    .hidden { display: none; }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -17,11 +19,26 @@
   <div class="bg-green near-white pv2 ph3 mt2 mb3">
     <h1 class="ma0 mw7 center">Grocery list</h1>
   </div>
-  <div class="mw7 center">    
+  <div class="mw7 center">
     <div class="ph3" id="lists">
-      
+
     </div>
   </div>
+  <form class="hidden" id="login-form">
+    <div id="login-error"></div>
+
+    <div>
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username">
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password">
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
 </body>
 
 </html>

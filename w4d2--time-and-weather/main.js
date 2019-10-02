@@ -28,8 +28,9 @@ fetch('https://api.weather.gov/points/35.994,-78.8986')
   })
 
 const swDiv = document.querySelector('#star-wars')
+let personURL = 'https://swapi.co/api/people/1/'
 
-fetch('https://swapi.co/api/people/1/')
+fetch(personURL)
   .then(res => res.json())
   .then(data => {
     const h2 = document.createElement('h2')

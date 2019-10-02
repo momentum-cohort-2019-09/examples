@@ -1,13 +1,34 @@
-/* globals fetch, FormData */
+/* globals fetch, FormData, btoa, sessionStorage */
 
 const uuidv4 = require('uuid/v4')
+let credentials = {
+  username: sessionStorage.getItem('username'),
+  password: sessionStorage.getItem('password')
+}
+
+function basicAuthCreds (username, password) {
+  return 'Basic ' + btoa(`${username}:${password}`)
+}
 
 function populateListsAndItems () {
-  fetch('http://localhost:3000/lists?_embed=items')
-    .then(response => response.json())
+  fetch('http://localhost:3000/lists?_embed=items', {
+    headers: {
+      'Authorization': basicAuthCreds(credentials.username, credentials.password)
+    }
+  })
+    .then(response => {
+      if (response.status === 401) {
+        // handle unauthorized
+      } else {
+        return response.json()
+      }
+    })
     .then(data => {
       console.log(data)
       document.getElementById('lists').innerHTML = data.map(generateListHTML).join('\n')
+    })
+    .catch(error => {
+      console.log(error)
     })
 }
 
@@ -27,8 +48,52 @@ function generateListHTML (list) {
   `
 }
 
+function showLoginForm () {
+  document.getElementById('login-form').classList.remove('hidden')
+  document.getElementById('lists').classList.add('hidden')
+}
+
+function hideLoginForm () {
+  document.getElementById('login-form').classList.add('hidden')
+  document.getElementById('lists').classList.remove('hidden')
+}
+
+function renderPage () {
+  if (!credentials.username || !credentials.password) {
+    showLoginForm()
+  } else {
+    hideLoginForm()
+    populateListsAndItems()
+  }
+}
+
 function main () {
-  populateListsAndItems()
+  renderPage()
+
+  const loginForm = document.querySelector('#login-form')
+  loginForm.addEventListener('submit', function (event) {
+    event.preventDefault()
+    const formData = new FormData(loginForm)
+    const username = formData.get('username')
+    const password = formData.get('password')
+    fetch('http://localhost:3000/lists', {
+      headers: {
+        'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          credentials.username = username
+          credentials.password = password
+          sessionStorage.setItem('username', username)
+          sessionStorage.setItem('password', password)
+          renderPage()
+        } else {
+          document.getElementById('login-error').innerText = 'That is not a valid username and password.'
+        }
+      })
+  })
+
   document.querySelector('#lists').addEventListener('click', function (event) {
     if (event.target.matches('.add-item-link')) {
       event.preventDefault()
@@ -51,12 +116,13 @@ function main () {
         method: 'POST',
         body: JSON.stringify({ 'name': name, 'listId': listId, 'id': uuid }),
         headers: {
+          'Authorization': basicAuthCreds(credentials.username, credentials.password),
           'Content-Type': 'application/json'
         }
       })
         .then(response => {
           if (response.ok) {
-            populateListsAndItems()
+            renderPage()
           }
         })
     }

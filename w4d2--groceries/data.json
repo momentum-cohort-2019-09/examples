@@ -1,4 +1,16 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "username": "clinton",
+      "password": "password"
+    },
+    {
+      "id": "7216d6da-6e1d-4141-b07c-8da43246fe5d",
+      "username": "clinton2",
+      "password": "pass"
+    }
+  ],
   "lists": [
     {
       "id": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
@@ -36,12 +48,6 @@
       "name": "Bread"
     },
     {
-      "id": "ycLV49e"
-    },
-    {
-      "id": "MRaFuFe"
-    },
-    {
       "name": "Wasabi peas",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
       "id": "cf676db0-23ef-457c-b5d2-dc2a88e732a8"
@@ -50,6 +56,11 @@
       "name": "Adult diapers",
       "listId": "3ce306b3-5c74-4702-995d-0746c5ff5f64",
       "id": "0143c723-41ca-48ab-a3eb-9ad9bd5b75f7"
+    },
+    {
+      "name": "Almonds",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "ac6b1bee-bd7d-4724-bc14-7011ed230412"
     }
   ]
 }
