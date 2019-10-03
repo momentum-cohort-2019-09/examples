@@ -25,12 +25,14 @@
     {
       "id": "b451ab9d-18b9-4b4c-8911-19941bda69e2",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
-      "name": "Plain yogurt"
+      "name": "Plain yogurt",
+      "markedOff": true
     },
     {
       "id": "843fc5fa-08d8-4c4c-b745-9d7a2f6c6246",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
-      "name": "Hummus"
+      "name": "Hummus",
+      "markedOff": true
     },
     {
       "id": "0cc57bf7-281e-4904-9766-e21cadf9599a",
@@ -50,7 +52,8 @@
     {
       "name": "Wasabi peas",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
-      "id": "cf676db0-23ef-457c-b5d2-dc2a88e732a8"
+      "id": "cf676db0-23ef-457c-b5d2-dc2a88e732a8",
+      "markedOff": true
     },
     {
       "name": "Adult diapers",
@@ -60,12 +63,40 @@
     {
       "name": "Almonds",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
-      "id": "ac6b1bee-bd7d-4724-bc14-7011ed230412"
+      "id": "ac6b1bee-bd7d-4724-bc14-7011ed230412",
+      "markedOff": false
     },
     {
       "name": "Oranges",
       "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
-      "id": "e95fbffc-704b-42b5-8bed-8b2c8d99cc4c"
+      "id": "e95fbffc-704b-42b5-8bed-8b2c8d99cc4c",
+      "markedOff": true
+    },
+    {
+      "name": "Apples",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "882c40ce-a809-4e5c-89fd-3fcd34eb56a3",
+      "markedOff": true
+    },
+    {
+      "name": "Bananas",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "f98e1668-b9af-4528-8b23-2455aa7da47a"
+    },
+    {
+      "name": "Mangos",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "af6ae218-05bf-42b1-9d3d-269e8494218f"
+    },
+    {
+      "name": "Papayas",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "0d196172-d337-49a7-baa0-af2358627ce9"
+    },
+    {
+      "name": "Honeydew",
+      "listId": "4d408a2e-b11b-4a6d-9c10-576a8271d0a2",
+      "id": "3e42a634-12e3-4fc4-94d6-684353000196"
     }
   ]
 }

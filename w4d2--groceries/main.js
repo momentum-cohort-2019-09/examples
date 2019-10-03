@@ -7,6 +7,17 @@ const app = {
     credentials: {
       username: sessionStorage.getItem('username'),
       password: sessionStorage.getItem('password')
+    },
+    lists: []
+  },
+
+  getItem: function (itemId) {
+    // Loop through each list's items looking for the item with id == itemId
+    for (let groceryList of this.data.lists) {
+      const item = groceryList.items.find(item => item.id === itemId)
+      if (item) {
+        return item
+      }
     }
   },
 
@@ -17,6 +28,14 @@ const app = {
     }
     sessionStorage.setItem('username', username)
     sessionStorage.setItem('password', password)
+  },
+
+  addAuthHeader: function (headers) {
+    if (!headers) { headers = {} }
+
+    return Object.assign({}, headers, {
+      'Authorization': 'Basic ' + btoa(`${app.data.credentials.username}:${app.data.credentials.password}`)
+    })
   },
 
   login: function (username, password) {
@@ -37,17 +56,60 @@ const app = {
 
   addItem: function (listId, name) {
     const uuid = uuidv4()
+    const newItem = { 'name': name, 'listId': listId, 'id': uuid }
+
+    // Find the list to add the item to.
+    // Go ahead and add the item before we make the POST request to add it to the DB.
+    // Update the page to show the item.
+    const groceryList = this.data.lists.find(list => list.id === listId)
+    groceryList.items.push(newItem)
+    this.renderListsAndItems()
+
     fetch('http://localhost:3000/items/', {
       method: 'POST',
-      body: JSON.stringify({ 'name': name, 'listId': listId, 'id': uuid }),
-      headers: {
-        'Authorization': basicAuthCreds(app.data.credentials.username, app.data.credentials.password),
+      body: JSON.stringify(newItem),
+      headers: this.addAuthHeader({
         'Content-Type': 'application/json'
-      }
+      })
     })
-      .then(response => {
-        if (response.ok) {
-          this.render()
+      .then(response => {})
+  },
+
+  retrieveListsAndItems: function () {
+    return fetch('http://localhost:3000/lists?_embed=items', {
+      headers: app.addAuthHeader()
+    })
+      .then(response => response.json())
+      .then(listsData => {
+        this.data.lists = listsData
+        console.log(this.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
+
+  renderListsAndItems: function () {
+    document.getElementById('lists').innerHTML = this.data.lists.map(generateListHTML).join('\n')
+  },
+
+  markItem: function (itemNode) {
+    const itemId = itemNode.dataset.itemId
+    const item = this.getItem(itemId)
+    const markedOff = item.markedOff
+
+    fetch(`http://localhost:3000/items/${itemId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ 'markedOff': !markedOff }),
+      headers: this.addAuthHeader({ 'Content-Type': 'application/json' })
+    })
+      .then(response => response.json())
+      .then(itemFromServer => {
+        item.markedOff = itemFromServer.markedOff
+        if (item.markedOff) {
+          itemNode.classList.add('strike')
+        } else {
+          itemNode.classList.remove('strike')
         }
       })
   },
@@ -57,45 +119,26 @@ const app = {
       showLoginForm()
     } else {
       hideLoginForm()
-      populateListsAndItems()
+      this.retrieveListsAndItems().then(() => this.renderListsAndItems())
     }
   }
 }
 
-function basicAuthCreds (username, password) {
-  return 'Basic ' + btoa(`${username}:${password}`)
-}
-
-function populateListsAndItems () {
-  fetch('http://localhost:3000/lists?_embed=items', {
-    headers: {
-      'Authorization': basicAuthCreds(
-        app.data.credentials.username,
-        app.data.credentials.password)
-    }
-  })
-    .then(response => {
-      if (response.status === 401) {
-        // handle unauthorized
-      } else {
-        return response.json()
-      }
-    })
-    .then(data => {
-      console.log(data)
-      document.getElementById('lists').innerHTML = data.map(generateListHTML).join('\n')
-    })
-    .catch(error => {
-      console.log(error)
-    })
-}
-
 function generateListHTML (list) {
+  function strikeClass (item) {
+    if (item.markedOff) {
+      return 'strike'
+    } else {
+      return ''
+    }
+  }
+
   return `
   <section class="shadow-1 pv1 ph3 mb4">
     <h2 class="mt3">${list.name}</h2>
     <ul class="list pl0">
-      ${list.items.map(item => `<li class="mb2">${item.name}</li>`).join('\n')}      
+      ${list.items.map(item => `<li class="pa1 mb1 grocery-item ${strikeClass(item)}" 
+        data-item-id="${item.id}">${item.name}</li>`).join('\n')}      
       <li class="mb2"><a class="add-item-link" href="#">+ Add</a></li>      
     </ul>
     <form class="add-item-form hidden mb2" data-list-id="${list.id}">
@@ -128,13 +171,17 @@ function main () {
     app.login(username, password)
   })
 
-  document.querySelector('#lists').addEventListener('click', function (event) {
+  document.querySelector('#lists').addEventListener('click', (event) => {
     if (event.target.matches('.add-item-link')) {
       event.preventDefault()
       const listItem = event.target.parentElement
       const form = listItem.parentElement.nextElementSibling
       listItem.classList.add('hidden')
       form.classList.remove('hidden')
+    }
+
+    if (event.target.matches('.grocery-item')) {
+      app.markItem(event.target)
     }
   })
 

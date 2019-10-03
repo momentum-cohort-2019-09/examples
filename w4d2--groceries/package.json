@@ -3,7 +3,7 @@
   "scripts": {
     "start": "run-p parcel json-server",
     "parcel": "parcel serve index.html",
-    "json-server": "json-server data.json --middlewares auth.js"
+    "json-server": "json-server data.json --middlewares auth.js --delay 300"
   },
   "dependencies": {
     "hyperscript": "^2.0.2",
