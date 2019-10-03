@@ -3,63 +3,12 @@
 const uuidv4 = require('uuid/v4')
 
 const app = {
-  data: {
-    credentials: {
-      username: sessionStorage.getItem('username'),
-      password: sessionStorage.getItem('password')
-    }
-  },
 
-  setCredentials: function (username, password) {
-    this.data.credentials = {
-      username: username,
-      password: password
-    }
-    sessionStorage.setItem('username', username)
-    sessionStorage.setItem('password', password)
-  },
+}
 
-  login: function (username, password) {
-    fetch('http://localhost:3000/lists', {
-      headers: {
-        'Authorization': 'Basic ' + btoa(`${username}:${password}`)
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          this.setCredentials(username, password)
-          this.render()
-        } else {
-          document.getElementById('login-error').innerText = 'That is not a valid username and password.'
-        }
-      })
-  },
-
-  addItem: function (listId, name) {
-    const uuid = uuidv4()
-    fetch('http://localhost:3000/items/', {
-      method: 'POST',
-      body: JSON.stringify({ 'name': name, 'listId': listId, 'id': uuid }),
-      headers: {
-        'Authorization': basicAuthCreds(app.data.credentials.username, app.data.credentials.password),
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          this.render()
-        }
-      })
-  },
-
-  render: function () {
-    if (!this.data.credentials.username || !this.data.credentials.password) {
-      showLoginForm()
-    } else {
-      hideLoginForm()
-      populateListsAndItems()
-    }
-  }
+let credentials = {
+  username: sessionStorage.getItem('username'),
+  password: sessionStorage.getItem('password')
 }
 
 function basicAuthCreds (username, password) {
@@ -69,9 +18,7 @@ function basicAuthCreds (username, password) {
 function populateListsAndItems () {
   fetch('http://localhost:3000/lists?_embed=items', {
     headers: {
-      'Authorization': basicAuthCreds(
-        app.data.credentials.username,
-        app.data.credentials.password)
+      'Authorization': basicAuthCreds(credentials.username, credentials.password)
     }
   })
     .then(response => {
@@ -116,8 +63,17 @@ function hideLoginForm () {
   document.getElementById('lists').classList.remove('hidden')
 }
 
+function renderPage () {
+  if (!credentials.username || !credentials.password) {
+    showLoginForm()
+  } else {
+    hideLoginForm()
+    populateListsAndItems()
+  }
+}
+
 function main () {
-  app.render()
+  renderPage()
 
   const loginForm = document.querySelector('#login-form')
   loginForm.addEventListener('submit', function (event) {
@@ -125,7 +81,22 @@ function main () {
     const formData = new FormData(loginForm)
     const username = formData.get('username')
     const password = formData.get('password')
-    app.login(username, password)
+    fetch('http://localhost:3000/lists', {
+      headers: {
+        'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          credentials.username = username
+          credentials.password = password
+          sessionStorage.setItem('username', username)
+          sessionStorage.setItem('password', password)
+          renderPage()
+        } else {
+          document.getElementById('login-error').innerText = 'That is not a valid username and password.'
+        }
+      })
   })
 
   document.querySelector('#lists').addEventListener('click', function (event) {
@@ -145,8 +116,20 @@ function main () {
       const formData = new FormData(form)
       const name = formData.get('name')
       const listId = form.dataset.listId
-
-      app.addItem(listId, name)
+      const uuid = uuidv4()
+      fetch('http://localhost:3000/items/', {
+        method: 'POST',
+        body: JSON.stringify({ 'name': name, 'listId': listId, 'id': uuid }),
+        headers: {
+          'Authorization': basicAuthCreds(credentials.username, credentials.password),
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            renderPage()
+          }
+        })
     }
   })
 }

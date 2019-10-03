@@ -6,6 +6,7 @@
     "json-server": "json-server data.json --middlewares auth.js"
   },
   "dependencies": {
+    "hyperscript": "^2.0.2",
     "json-server": "^0.15.1",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.3",
