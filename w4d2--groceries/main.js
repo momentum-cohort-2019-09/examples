@@ -13,7 +13,7 @@ const app = {
 
   getItem: function (itemId) {
     // Loop through each list's items looking for the item with id == itemId
-    for (let groceryList of this.data.lists) {
+    for (const groceryList of this.data.lists) {
       const item = groceryList.items.find(item => item.id === itemId)
       if (item) {
         return item
@@ -34,14 +34,14 @@ const app = {
     if (!headers) { headers = {} }
 
     return Object.assign({}, headers, {
-      'Authorization': 'Basic ' + btoa(`${app.data.credentials.username}:${app.data.credentials.password}`)
+      Authorization: 'Basic ' + btoa(`${app.data.credentials.username}:${app.data.credentials.password}`)
     })
   },
 
   login: function (username, password) {
     fetch('http://localhost:3000/lists', {
       headers: {
-        'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+        Authorization: 'Basic ' + btoa(`${username}:${password}`)
       }
     })
       .then(response => {
@@ -56,7 +56,7 @@ const app = {
 
   addItem: function (listId, name) {
     const uuid = uuidv4()
-    const newItem = { 'name': name, 'listId': listId, 'id': uuid }
+    const newItem = { name: name, listId: listId, id: uuid }
 
     // Find the list to add the item to.
     // Go ahead and add the item before we make the POST request to add it to the DB.
@@ -100,7 +100,7 @@ const app = {
 
     fetch(`http://localhost:3000/items/${itemId}`, {
       method: 'PATCH',
-      body: JSON.stringify({ 'markedOff': !markedOff }),
+      body: JSON.stringify({ markedOff: !markedOff }),
       headers: this.addAuthHeader({ 'Content-Type': 'application/json' })
     })
       .then(response => response.json())
