@@ -90,7 +90,7 @@ const app = {
   },
 
   renderListsAndItems: function () {
-    document.getElementById('lists').innerHTML = this.data.lists.map(generateListHTML).join('\n')
+    document.querySelector('#lists').innerHTML = this.data.lists.map(generateListHTML).join('\n')
   },
 
   markItem: function (itemNode) {
@@ -150,13 +150,13 @@ function generateListHTML (list) {
 }
 
 function showLoginForm () {
-  document.getElementById('login-form').classList.remove('hidden')
-  document.getElementById('lists').classList.add('hidden')
+  document.querySelector('#login-form').classList.remove('hidden')
+  document.querySelector('#lists').classList.add('hidden')
 }
 
 function hideLoginForm () {
-  document.getElementById('login-form').classList.add('hidden')
-  document.getElementById('lists').classList.remove('hidden')
+  document.querySelector('#login-form').classList.add('hidden')
+  document.querySelector('#lists').classList.remove('hidden')
 }
 
 function main () {
