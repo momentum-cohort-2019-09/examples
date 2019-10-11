@@ -11,6 +11,9 @@ class Cave:
         self.bat = False
         self.wumpus = False
 
+    def is_safe(self):
+        return not (self.pit or self.bat or self.wumpus)
+
     def add_connection(self, cave):
         """
         Connect this cave to another.
